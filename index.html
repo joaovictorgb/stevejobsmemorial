@@ -124,30 +124,11 @@
     <section id="quotes" class="quotes py-5 bg-light">
         <div class="container">
             <h2 class="text-center mb-5">Citações</h2>
-            <div id="quoteCarousel" class="carousel slide" data-bs-ride="carousel">
-                <div class="carousel-inner">
-                    <div class="carousel-item active">
-                        <p class="lead text-center">"Aqueles que são loucos o suficiente para pensar que podem mudar o mundo são os que o fazem."</p>
-                    </div>
-                    <div class="carousel-item">
-                        <p class="lead text-center">"Seu trabalho vai preencher grande parte da sua vida, e a única maneira de estar realmente satisfeito é fazer o que você acredita ser um grande trabalho."</p>
-                    </div>
-                    <div class="carousel-item">
-                        <p class="lead text-center">"Inovação distingue um líder de um seguidor."</p>
-                    </div>
-                </div>
-                <a class="carousel-control-prev" href="#quoteCarousel" role="button" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Anterior</span>
-                </a>
-                <a class="carousel-control-next" href="#quoteCarousel" role="button" data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Próximo</span>
-                </a>
+            <div class="row" id="quotesContainer">
+                <!-- Citações serão carregadas dinamicamente aqui -->
             </div>
         </div>
     </section>
-
     <!-- Depoimentos -->
     <section id="testimonials" class="testimonials py-5">
         <div class="container">
@@ -206,7 +187,15 @@
             </form>
         </div>
     </section>
-
+    <!-- Eventos -->
+    <section id="events" class="events py-5 bg-light">
+        <div class="container">
+            <h2 class="text-center mb-5">Eventos</h2>
+            <div class="row" id="eventsContainer">
+                <!-- Eventos serão carregados dinamicamente aqui -->
+            </div>
+        </div>
+    </section>
     <!-- Footer -->
     <footer class="bg-dark text-white py-4">
         <div class="container text-center">
@@ -217,7 +206,110 @@
     </footer>
 
     <!-- JavaScript -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="index.js"></script>
+      <!-- JavaScript -->
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+      <script>
+          document.addEventListener("DOMContentLoaded", function() {
+              // Função para carregar os eventos
+              function loadEvents() {
+                  fetch('http://localhost:3000/api/get_events')
+                      .then(response => response.json())
+                      .then(data => {
+                          const eventsContainer = document.getElementById('eventsContainer');
+                          eventsContainer.innerHTML = ''; // Limpar container antes de carregar novos eventos
+                          data.forEach(event => {
+                              const eventDiv = document.createElement('div');
+                              eventDiv.classList.add('col-md-4', 'mb-4');
+                              eventDiv.innerHTML = `
+                                  <div class="card">
+                                      <div class="card-body">
+                                          <h5 class="card-title">${event.name}</h5>
+                                          <p class="card-text">Data: ${event.date}</p>
+                                          <p class="card-text">Local: ${event.location}</p>
+                                      </div>
+                                  </div>
+                              `;
+                              eventsContainer.appendChild(eventDiv);
+                          });
+                      })
+                      .catch(error => console.error('Erro ao carregar eventos:', error));
+              }
+  
+              // Função para carregar as citações
+              function loadQuotes() {
+                  fetch('http://localhost:3000/api/get_quotes')
+                      .then(response => response.json())
+                      .then(data => {
+                          const quotesContainer = document.getElementById('quotesContainer');
+                          quotesContainer.innerHTML = ''; // Limpar container antes de carregar novas citações
+                          data.forEach(quote => {
+                              const quoteDiv = document.createElement('div');
+                              quoteDiv.classList.add('col-md-4', 'mb-4');
+                              quoteDiv.innerHTML = `
+                                  <div class="card">
+                                      <div class="card-body">
+                                          <p class="card-text">"${quote.quote}"</p>
+                                      </div>
+                                  </div>
+                              `;
+                              quotesContainer.appendChild(quoteDiv);
+                          });
+                      })
+                      .catch(error => console.error('Erro ao carregar citações:', error));
+              }
+  
+              // Carregar eventos e citações ao carregar a página
+              loadEvents();
+              loadQuotes();
+  
+              // Lidar com o envio do formulário de adicionar evento
+              document.getElementById('eventForm')?.addEventListener('submit', function(e) {
+                  e.preventDefault();
+                  const name = document.getElementById('eventName').value;
+                  const date = document.getElementById('eventDate').value;
+                  const location = document.getElementById('eventLocation').value;
+  
+                  fetch('http://localhost:3000/api/add_event', {
+                      method: 'POST',
+                      headers: {
+                          'Content-Type': 'application/json'
+                      },
+                      body: JSON.stringify({ name, date, location })
+                  })
+                  .then(response => response.json())
+                  .then(data => {
+                      if (data.message === 'Evento adicionado com sucesso.') {
+                          loadEvents(); // Recarregar eventos após adicionar novo evento
+                      } else {
+                          console.error('Erro ao adicionar evento:', data.message);
+                      }
+                  })
+                  .catch(error => console.error('Erro ao adicionar evento:', error));
+              });
+  
+              // Lidar com o envio do formulário de adicionar citação
+              document.getElementById('quoteForm')?.addEventListener('submit', function(e) {
+                  e.preventDefault();
+                  const quote = document.getElementById('quoteText').value;
+  
+                  fetch('http://localhost:3000/api/add_quote', {
+                      method: 'POST',
+                      headers: {
+                          'Content-Type': 'application/json'
+                      },
+                      body: JSON.stringify({ quote })
+                  })
+                  .then(response => response.json())
+                  .then(data => {
+                      if (data.message === 'Citação adicionada com sucesso.') {
+                          loadQuotes(); // Recarregar citações após adicionar nova citação
+                      } else {
+                          console.error('Erro ao adicionar citação:', data.message);
+                      }
+                  })
+                  .catch(error => console.error('Erro ao adicionar citação:', error));
+              });
+          });
+      </script>
 </body>
 </html>

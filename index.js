@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", function() {
     const testimonialSection = document.querySelector('.testimonials .row');
+    const eventsContainer = document.getElementById('eventsContainer');
 
     // Carregar e exibir depoimentos do banco de dados
     function loadTestimonials() {
@@ -86,6 +87,34 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    // Carregar depoimentos quando a página for carregada
+    // Função para carregar e atualizar eventos
+    function loadEvents() {
+        fetch('http://localhost:3000/api/get_events')
+            .then(response => response.json())
+            .then(events => {
+                eventsContainer.innerHTML = ''; // Limpar eventos antigos
+                events.forEach(event => {
+                    const eventElement = document.createElement('div');
+                    eventElement.className = 'col-md-4 mb-4';
+                    eventElement.innerHTML = `
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">${event.name}</h5>
+                                <p class="card-text">Data: ${event.date}</p>
+                                <p class="card-text">Local: ${event.location}</p>
+                            </div>
+                        </div>
+                    `;
+                    eventsContainer.appendChild(eventElement);
+                });
+            })
+            .catch(error => console.error('Erro ao carregar eventos:', error));
+    }
+
+    // Carregar depoimentos e eventos ao carregar a página
     loadTestimonials();
+    loadEvents();
+
+    // Atualizar eventos a cada 5 segundos
+    setInterval(loadEvents, 5000); // Atualiza a cada 5 segundos
 });

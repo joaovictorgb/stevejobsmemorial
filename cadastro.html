@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Steve Jobs Memorial</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen flex items-center justify-center p-4">
+    <div class="max-w-md w-full bg-white rounded-lg shadow-lg overflow-hidden">
+        <div class="p-8">
+            <h2 class="text-2xl font-bold text-center mb-8">Steve Jobs Memorial</h2>
+            <div class="mb-8 flex justify-center">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Steve_Jobs_Headshot_2010-CROP_%28cropped_2%29.jpg/800px-Steve_Jobs_Headshot_2010-CROP_%28cropped_2%29.jpg" 
+                     alt="Steve Jobs" 
+                     class="w-32 h-32 rounded-full object-cover">
+            </div>
+            <form class="space-y-4">
+                <div>
+                    <input type="text" placeholder="Full name" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div>
+                    <input type="email" placeholder="Email address" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div class="relative">
+                    <input type="password" placeholder="Password" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <button type="button" class="absolute right-3 top-2.5 text-gray-400">👁️</button>
+                </div>
+                <div class="relative">
+                    <input type="password" placeholder="Confirm Password" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <button type="button" class="absolute right-3 top-2.5 text-gray-400">👁️</button>
+                </div>
+                <button class="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition-colors">
+                    Create account in memorial
+                </button>
+            </form>
+            <div class="mt-6 text-center text-sm text-gray-500">
+                OR LOGIN WITH
+            </div>
+            <div class="mt-4 flex justify-center space-x-4">
+                <button class="flex items-center px-4 py-2 border rounded-md hover:bg-gray-50">
+                    <img src="https://www.google.com/favicon.ico" alt="Google" class="w-5 h-5 mr-2">
+                    Google
+                </button>
+                <button class="flex items-center px-4 py-2 border rounded-md hover:bg-gray-50">
+                    <img src="https://www.apple.com/favicon.ico" alt="Apple" class="w-5 h-5 mr-2">
+                    Apple
+                </button>
+                <button class="flex items-center px-4 py-2 border rounded-md hover:bg-gray-50">
+                    <img src="https://www.facebook.com/favicon.ico" alt="Facebook" class="w-5 h-5 mr-2">
+                    Facebook
+                </button>
+            </div>
+            <div class="mt-6 text-center text-sm">
+                Already have account? <a href="#" class="text-blue-600 hover:underline">Log in</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
